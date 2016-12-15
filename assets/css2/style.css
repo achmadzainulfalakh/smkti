@@ -1,0 +1,13 @@
+/*this is custom style*/
+footer{
+margin:0px 0px ;
+border-top: 1px solid #000000;
+}
+.footer{
+background-color: #222;
+color: #ffffff;
+padding:50px 50px ;
+}
+#first-container{
+min-height: 600px;
+}

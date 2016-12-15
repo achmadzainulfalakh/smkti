@@ -1,0 +1,3 @@
+Catatan Pengembangan:
+- halaman/page memang di desain secara statis
+- halaman post di desain dinamis 
