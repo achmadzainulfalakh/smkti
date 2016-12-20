@@ -1,9 +1,10 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 class Login extends CI_Controller {
+	public $menu;
 	function __construct() {
 		parent::__construct();
 		$this->load->model('login_model'); // Berfungsi untuk memanggil Login_model
-		
+		$this->menu=array();
 	}
 
 	// Berfungsi untuk menampilkan halaman login
@@ -16,7 +17,7 @@ class Login extends CI_Controller {
 					'title'=>'Administrator',
 					'isi' =>'admin/login_view',
 					'pesan' =>'',
-					'menu' =>'',
+					'menu' =>$this->menu,
 					);
 			$this->load->view('page/head',$data);
 			$this->load->view('page/header');

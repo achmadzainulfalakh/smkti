@@ -23,10 +23,17 @@ class Pdf extends MPDF
 	 * @param	array	$data The view data
 	 * @return	void
 	 */
+	//metode jika menggunakan view
 	public function load_view($view, $data = array())
 	{
 		$html = $this->ci()->load->view($view, $data, TRUE);
 
+		$this->WriteHtml($html);
+	}
+	//metode jika menggunakan parser
+	public function load_parser($view, $data = array())
+	{
+		$html = $this->ci()->parser->parse($view, $data, TRUE);
 		$this->WriteHtml($html);
 	}
 }

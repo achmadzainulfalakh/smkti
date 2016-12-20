@@ -38,8 +38,9 @@ class Board extends CI_Controller {
 		}
 
 		$this->menu=array(
-			'<li><a class="pull-left" href="#">Reset Pendaftar</a></li>',
-			'<li><a class="pull-left" href="login/logout">Logout</a></li>',
+			
+			'<li><a id="resetBtn" class="pull-left" href="#">Reset Pendaftar</a></li>',
+			  '<li><a class="pull-left" href="login/logout">Logout</a></li>',
 		);
 		
 	}
@@ -50,6 +51,11 @@ class Board extends CI_Controller {
 	}
 	public function dashboard()
 	{
+		if($_POST){
+			if($this->input->post('reset')){
+				$this->pendaftar->reset_pendaftar();
+			}
+		}
 		if($this->login_model->username()){
 			$data = array(
 					'title'   => 'Daftar Pendaftar',
@@ -58,6 +64,7 @@ class Board extends CI_Controller {
 			$this->load->view('page/head', $data);
 			$this->load->view('page/header');
 			$this->load->view('contents/iframetable');
+			$this->load->view('contents/modal_reset');
 			$this->load->view('page/footer');		
 		}else{
 			redirect('login');
@@ -94,10 +101,7 @@ class Board extends CI_Controller {
 	}
 	public function exportcsv()
 	{
-	$query = $this->db->query("SELECT * FROM pendaftar;");
-	$csv=$this->dbutil->csv_from_result($query);
-	echo $csv;
-	force_download('pendaftar.csv',$csv);
+		$this->pendaftar->exportcsv();
 	}
 	
 	
@@ -258,24 +262,6 @@ class Board extends CI_Controller {
 		'tahuncopy'=>date("Y"),
 		'author'=>'Achmad Zainul Falakh, S.Kom',
 		'linkauthor'=>'https://www.facebook.com/kesatria.pertama',
-		/*'frontmenu'=>array(
-						array(
-							'text'=>'Home',
-							'link'=>base_url().'index.php/site/',
-						),
-						array(
-							'text'=>'About',
-							'link'=>base_url().'index.php/site/about',
-						),
-						array(
-							'text'=>'posts',
-							'link'=>base_url().'index.php/site/posts',
-						),
-						array(
-							'text'=>'Contact',
-							'link'=>base_url().'index.php/site/contact',
-						),
-		),*/
 		'backmenu'=>$this->Menus_model->getDasMenu(),
 		'topbackmenu'=>array(	array(
 								'Name'=>'Log out',
@@ -298,24 +284,6 @@ class Board extends CI_Controller {
 		'tahuncopy'=>date("Y"),
 		'author'=>'Achmad Zainul Falakh, S.Kom',
 		'linkauthor'=>'https://www.facebook.com/kesatria.pertama',
-		/*'frontmenu'=>array(
-						array(
-							'text'=>'Home',
-							'link'=>base_url().'index.php/site/',
-						),
-						array(
-							'text'=>'About',
-							'link'=>base_url().'index.php/site/about',
-						),
-						array(
-							'text'=>'posts',
-							'link'=>base_url().'index.php/site/posts',
-						),
-						array(
-							'text'=>'Contact',
-							'link'=>base_url().'index.php/site/contact',
-						),
-		),*/
 		'backmenu'=>$this->Menus_model->getDasMenu(),
 		'topbackmenu'=>array(	array(
 								'Name'=>'Log out',
@@ -339,24 +307,6 @@ class Board extends CI_Controller {
 		'tahuncopy'=>date("Y"),
 		'author'=>'Achmad Zainul Falakh, S.Kom',
 		'linkauthor'=>'https://www.facebook.com/kesatria.pertama',
-		/*'frontmenu'=>array(
-						array(
-							'text'=>'Home',
-							'link'=>base_url().'index.php/site/',
-						),
-						array(
-							'text'=>'About',
-							'link'=>base_url().'index.php/site/about',
-						),
-						array(
-							'text'=>'posts',
-							'link'=>base_url().'index.php/site/posts',
-						),
-						array(
-							'text'=>'Contact',
-							'link'=>base_url().'index.php/site/contact',
-						),
-		),*/
 		'backmenu'=>$this->Menus_model->getDasMenu(),
 		'topbackmenu'=>array(	array(
 								'Name'=>'Log out',
@@ -456,24 +406,6 @@ class Board extends CI_Controller {
 		'tahuncopy'=>date("Y"),
 		'author'=>'Achmad Zainul Falakh, S.Kom',
 		'linkauthor'=>'https://www.facebook.com/kesatria.pertama',
-		/*'frontmenu'=>array(
-						array(
-							'text'=>'Home',
-							'link'=>base_url().'index.php/site',
-						),
-						array(
-							'text'=>'About',
-							'link'=>base_url().'index.php/site/about',
-						),
-						array(
-							'text'=>'posts',
-							'link'=>base_url().'index.php/site/posts',
-						),
-						array(
-							'text'=>'Contact',
-							'link'=>base_url().'index.php/site/contact',
-						),
-		),*/
 		'backmenu'=>$this->Menus_model->getDasMenu(),
 		'topbackmenu'=>array(	array(
 								'Name'=>'Log out',
@@ -496,24 +428,6 @@ class Board extends CI_Controller {
 		'tahuncopy'=>date("Y"),
 		'author'=>'Achmad Zainul Falakh, S.Kom',
 		'linkauthor'=>'https://www.facebook.com/kesatria.pertama',
-		/*'frontmenu'=>array(
-						array(
-							'text'=>'Home',
-							'link'=>base_url().'index.php/site/',
-						),
-						array(
-							'text'=>'About',
-							'link'=>base_url().'index.php/site/about',
-						),
-						array(
-							'text'=>'posts',
-							'link'=>base_url().'index.php/site/posts',
-						),
-						array(
-							'text'=>'Contact',
-							'link'=>base_url().'index.php/site/contact',
-						),
-		),*/
 		'backmenu'=>$this->Menus_model->getDasMenu(),
 		'topbackmenu'=>array(	array(
 								'Name'=>'Log out',
@@ -537,31 +451,12 @@ class Board extends CI_Controller {
 		'tahuncopy'=>date("Y"),
 		'author'=>'Achmad Zainul Falakh, S.Kom',
 		'linkauthor'=>'https://www.facebook.com/kesatria.pertama',
-		/*'frontmenu'=>array(
-						array(
-							'text'=>'Home',
-							'link'=>base_url().'index.php/site/',
-						),
-						array(
-							'text'=>'About',
-							'link'=>base_url().'index.php/site/about',
-						),
-						array(
-							'text'=>'posts',
-							'link'=>base_url().'index.php/site/posts',
-						),
-						array(
-							'text'=>'Contact',
-							'link'=>base_url().'index.php/site/contact',
-						),
-		),*/
 		'backmenu'=>$this->Menus_model->getDasMenu(),
 		'topbackmenu'=>array(	array(
 								'Name'=>'Log out',
 								'Link'=>base_url().'index.php/exp/index/logout',
 								),
 		),
-		//'post' => $this->Menus_model->getPost($this->uri->segment(3)),
 		'act'=>'new',
 		);
 		$this->load->view('backendcontents/header',$data);
@@ -613,24 +508,6 @@ class Board extends CI_Controller {
 		'tahuncopy'=>date("Y"),
 		'author'=>'Achmad Zainul Falakh, S.Kom',
 		'linkauthor'=>'https://www.facebook.com/kesatria.pertama',
-		/*'frontmenu'=>array(
-						array(
-							'text'=>'Home',
-							'link'=>base_url().'index.php/site',
-						),
-						array(
-							'text'=>'About',
-							'link'=>base_url().'index.php/site/about',
-						),
-						array(
-							'text'=>'posts',
-							'link'=>base_url().'index.php/site/posts',
-						),
-						array(
-							'text'=>'Contact',
-							'link'=>base_url().'index.php/site/contact',
-						),
-		),*/
 		'backmenu'=>$this->Menus_model->getDasMenu(),
 		'topbackmenu'=>array(	array(
 								'Name'=>'Log out',

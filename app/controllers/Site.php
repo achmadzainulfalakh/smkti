@@ -24,8 +24,8 @@ class Site extends CI_Controller {
 	public function __construct()
 	{
 		parent::__construct();
-		//$this->load->helper('url_helper');
 		$this->menu=array(
+		'<li><a class="pull-left" href="informasi.html">Informasi</a></li>',
 		'<li><a class="pull-left" href="cetak-ulang.html">Cetak Ulang Konfirmasi</a></li>',
 		);		
 	}
@@ -85,7 +85,9 @@ class Site extends CI_Controller {
 					'alamatlengkap' =>$this->security->sanitize_filename($this->input->post('alamatlengkap')),
 					
 					);
-					$_SESSION['id']=$this->security->sanitize_filename($this->input->post('id'));
+					// Berfungsi untuk menyimpan user data
+					$this->session->set_userdata($data);
+					
 					//menjalankan model pendaftar dengan metode add peserta
 					$this->pendaftar->addPeserta($data);
 					$this->success();
@@ -95,6 +97,7 @@ class Site extends CI_Controller {
 	//halaman Success
 	public function success()
 	{
+		
 		$data=array(
 			'imgheader'=>base_url().'assets/upload/home-bg.jpg',
 			'title'=>'HOME',
@@ -103,15 +106,19 @@ class Site extends CI_Controller {
 			'copyr'=>'Copyright &copy; Your Website 2016',
 		);
 		$dataform = array(
-				'form_entries' => $this->pendaftar->getfromID($_SESSION['id']),
+				'form_entries' => $this->pendaftar->getfromID($this->pendaftar->pendaftar_id()),
+				'pendaftar_ID' => $this->pendaftar->pendaftar_id(),
 		);
 		$this->load->view('page/head',$data);
-		//$this->load->view('page/header');
+		$this->load->view('page/header');
+		$this->load->view('contents/catatan');
 		$this->parser->parse('contents/formsuccessBT_template', $dataform);
-		//$this->load->view('page/footer');
+		
+		$this->load->view('page/footer');
+		
 	}
 	//halaman Success
-	/*public function printformsuccess()
+	public function printbukti()
 	{
 			$data=array(
 			'imgheader'=>base_url().'assets/upload/home-bg.jpg',
@@ -121,15 +128,19 @@ class Site extends CI_Controller {
 
 			'copyr'=>'Copyright &copy; Your Website 2016',
 		);
-		$dataform = array(
-				'form_entries' => $this->pendaftar->getfromID($_SESSION['id']),
-		);
+		//$dataform = array(
+		//		'form_entries' => $this->pendaftar->getfromID($_SESSION['id']),
+		//);
 		$pdfFilePath = "SMKTI_Pendaftaran_online.pdf";
 		//$this->load->view('page/head',$data);	
-		$html="<!doctype><html><head></head><body>allo</body><html>";
-		$this->m_pdf->pdf->WriteHTML($html);
-		$this->m_pdf->pdf->Output($pdfFilePath, "I");
-	}*/
+		//$html=$this->load->view('welcome_message');
+		$dataform = array(
+				'form_entries' => $this->pendaftar->getfromID($this->pendaftar->pendaftar_id()),
+		);		
+		$this->load->library('pdf');
+		$this->pdf->load_parser('contents/formsuccessBT_template',$dataform);
+		$this->pdf->Output();
+	}
 	private function get_chaptca($param) // method pembuat chapta
        {
         $alphabet   = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
@@ -162,14 +173,22 @@ class Site extends CI_Controller {
 			'subtitle'=>'',
 			'menu'=> $this->menu,
 			'copyr'=>'Copyright &copy; Your Website 2016',
+			'salahcaptcha'=>'',
+			'pendaftar_ID' => $this->pendaftar->pendaftar_id(),
 		);
 		
 		if($_POST && $this->cek_captcha() == TRUE && $this->pendaftar->getfromID($this->security->sanitize_filename($this->input->post('id'))) == true ){
 		
-		$dataform = array('form_entries' => $this->pendaftar->getfromID($this->security->sanitize_filename($this->input->post('id'))),
+		$dataform = array(
+				'form_entries' => $this->pendaftar->getfromID($this->pendaftar->pendaftar_id()),
+				
 		);
 		$this->load->view('page/head',$data);
+		$this->load->view('page/header');
+		$this->load->view('contents/catatan');
 		$this->parser->parse('contents/formsuccessBT_template', $dataform);
+		$this->load->view('page/footer');
+
 		
 		} else {
 		
@@ -226,15 +245,44 @@ class Site extends CI_Controller {
 	        $data = $this->dbutil->csv_from_result($result, $delimiter, $newline);
 	        force_download($filename, $data);
 	}
+	
+	//metode mendapatkan PDF
 	public function save_download()
 	{ 
 		$this->load->library('pdf');
-	$this->pdf->load_view('welcome_message');
-	$this->pdf->Output();
-		 
-			
+		$this->pdf->load_view('welcome_message');
+		$this->pdf->Output();			
 	}
-	
+	//halaman petunjuk penggunaan
+	public function penggunaan()
+	{
+		$data=array(
+			'imgheader'=>base_url().'assets/upload/home-bg.jpg',
+			'title'=>'HOME',
+			'subtitle'=>'',
+			'menu'=> $this->menu,
+			'copyr'=>'Copyright &copy; Your Website 2016',
+		);
+		$this->load->view('page/head',$data);
+		$this->load->view('page/header');
+		$this->load->view('contents/manual');
+		$this->load->view('page/footer');
+	}
+	//halaman informasi
+	public function informasi()
+	{
+		$data=array(
+			'imgheader'=>base_url().'assets/upload/home-bg.jpg',
+			'title'=>'HOME',
+			'subtitle'=>'',
+			'menu'=> $this->menu,
+			'copyr'=>'Copyright &copy; Your Website 2016',
+		);
+		$this->load->view('page/head',$data);
+		$this->load->view('page/header');
+		$this->load->view('contents/informasi');
+		$this->load->view('page/footer');
+	}
 
 
 }

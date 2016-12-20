@@ -20,7 +20,7 @@ class Login_model extends CI_Model {
 	  /* fungsi restrict halaman */
 	function users_id()
 	{
-	return $this->session->userdata('users_id');
+	return $this->session->userdata('id');
 	}
 
 	function username()

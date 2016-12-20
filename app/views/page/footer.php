@@ -26,7 +26,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 	
-	
+	<script>
+	$(document).ready(function(){
+		$("#resetBtn").click(function(){
+			$("#resetModal").modal();
+		});
+	});
+	</script>
   
 
 </body></html>

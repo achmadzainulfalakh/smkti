@@ -60,4 +60,6 @@ $route['exportcsv'] = 'board/exportcsv';
 $route['logout'] = 'login/logout';
 $route['print'] = 'site/printformsuccess';
 $route['cetak-ulang'] = 'site/cetakulang';
+$route['penggunaan'] = 'site/penggunaan';
+$route['informasi'] = 'site/informasi';
 $route['dashboard'] = 'board/dashboard';

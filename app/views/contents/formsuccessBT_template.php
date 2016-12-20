@@ -57,7 +57,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					<label >HP :</label> {nohp}
 					<br/>
 					<div class="form-group">
-					<a href="<?=base_url()?>" class="btn btn-success btn-lg">Form Pendaftaran</a> 
+					
 					<!--<a href="<?//=base_url().'print.html?id='.$_SESSION['id']?>" class="btn btn-info btn-lg pull-right">Cetak</a>-->
 					</div>
 					

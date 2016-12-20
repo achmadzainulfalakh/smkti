@@ -34,6 +34,22 @@ class Pendaftar extends CI_Model {
 		$this->db->insert('pendaftar', $data);
 		// Produces: INSERT INTO pendaftar (ID,nama,nohp,namawali) VALUES ($_POST['ID'], $_POST['nama'], $_POST['nohp'],$_POST['namawali'])
 	}
+	function pendaftar_id()
+	{
+		return $this->session->userdata('ID');
+	}
+	
+	function reset_pendaftar()
+	{
+		$this->db->query("delete FROM pendaftar");
+	}
+
+	function exportcsv()
+	{
+		$query = $this->db->query("SELECT ID,nama as Nama,tempatlahir as `Tempat Lahir`,tanggallahir as `Tanggal Lahir`,jeniskelamin as `Jenis kelamin`,agama as Agama,asalsekolah as `Asal Sekolah`,alamatlengkap as `Alamat Lengkap`,nohp as `No HP`,namawali as `Nama Wali` FROM pendaftar;");
+		$csv=$this->dbutil->csv_from_result($query);
+		force_download('pendaftar.csv',$csv);
+	}
 	
 }
 

@@ -11,3 +11,6 @@ padding:50px 50px ;
 #first-container{
 min-height: 600px;
 }
+.fixed-box{
+min-height: 200px;
+}
